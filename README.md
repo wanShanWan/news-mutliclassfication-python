@@ -3,7 +3,7 @@ This is a project module for news multi-classification in machine learning.
 In this module, we convert news to input data just by extract "word count" and "tf-idf" feature.
 
 ## Prerequisites
-python 3.5
+python 3.5\n
 sklearn 0.19
 pip xgboost
 pip pickle
