@@ -11,6 +11,8 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
+from SpamMessageClassifier import data_preprocress
+
 
 BASE_DIR = os.path.dirname(__file__)
 
@@ -62,7 +64,7 @@ def xgboost_init(**kwargs):
 
 class model(object):
 
-    def __init__(self, model_path, model_name, **kwargs):
+    def __init__(self, model_path, model_name=None, **kwargs):
         self.model_path = os.path.join(BASE_DIR, model_path)
         self.model_name = model_name
         self.kwargs = kwargs
@@ -70,7 +72,6 @@ class model(object):
         print(self.model_path)
         if os.path.exists(self.model_path):
             self.model = self.load_model()
-            print('1111')
         else:
             self.model = getattr(sys.modules[__name__], '%s_init' % self.model_name.lower())(**self.kwargs)
 
@@ -81,10 +82,8 @@ class model(object):
                                                             label_data,
                                                             test_size=0.2,
                                                             random_state=24)
-        print(x_train[:2])
-        print(y_train[:2])
 
-        x_train, x_test = self.tf_idf_stop_vector(x_train, x_test)
+        x_train, x_test = self.count_stop_vector(x_train, x_test)
 
         # print(x_train, x_test, y_train, y_test)
         # ss = StandardScaler()
@@ -130,6 +129,7 @@ class model(object):
     @staticmethod
     def count_stop_vector(x_train, x_test):
         count_stop_vec = CountVectorizer(stop_words='english')
+        print(count_stop_vec.stop_words)
         x_train = count_stop_vec.fit_transform(x_train)
         x_test = count_stop_vec.transform(x_test)
         return x_train, x_test
@@ -148,22 +148,27 @@ class model(object):
         x_test = tf_idf_stop_vec.transform(x_test)
         return x_train, x_test
 
+
 if __name__ == '__main__':
 
-    news_data = fetch_20newsgroups(subset='all')
+    # # useage of fetch_20newsgroups
+    # news_data = fetch_20newsgroups(subset='all')
+    # model = model(model_path='model/svm_model.pkl', model_name='svm', penalty='l2')
+    # print(type(news_data.data))
+    # model.train(news_data.data, news_data.target)
+    # model.save_model()
 
-    model = model(model_path='model/svm_model.pkl', model_name='svm', penalty='l2')
-    print(type(news_data.data))
-    model.train(news_data.data, news_data.target)
-    model.save_model()
-
-    # x_train, x_test = model.count_stop_vector(test_data, test_data[-20:-1])
+    # # inference
     # model = model(model_path='model/test_model.pkl', model_name='svm')
     # prediction = model.inference(input_data)
     # print(prediction)
 
+    # useage of Chinese Spam Mail Binary-classification
+    # load data from txt
+    data, label = data_preprocress.read_data('./data/data_labeled.txt')
+    # segment every mail
+    data = data_preprocress.content_word_segment(data)
 
-
-
-
+    model = model(model_path='model/test_model.pkl', model_name='lr', penalty='l2', class_weight={1:5, 0:1})
+    model.train(data, label)
 
