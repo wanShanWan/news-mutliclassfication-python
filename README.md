@@ -1,26 +1,27 @@
 ## Project Title
-This is a project module for news multi-classification in machine learning.
-In this module, we convert news to input data just by extract "word count" and "tf-idf" feature.
+This is a project module for news multi-classification in machine learning.<br />
+In this module, we convert news to input data just by extract "word count" and "tf-idf" feature.<br />
 
 ## Prerequisites
-python 3.5\n
-sklearn 0.19
-pip xgboost
-pip pickle
+python 3.5 <br />
+sklearn 0.19<br />
+pip xgboost<br />
+pip pickle<br />
 
 ## Data set
-sklearn.datasets.fetch_20newsgroups(subset='all')
-The number of the news dataset is up to 18846.
+sklearn.datasets.fetch_20newsgroups(subset='all')<br />
+The number of the news dataset is up to 18846.<br />
 
 ## Model Type
 Some test are in LogisticRegression, LinearSVM, SGD, Decision_Tree, Naive_Bayes, KNN, RandomForest,
-Gradient_boosting, XGBoost.
+Gradient_boosting, XGBoost.<br />
 
 ## Result
-After compare with different model, we find the max F-1 is  0.926 with Linear_SVM.
+After compare with different model, we find the max F-1 is  0.926 with Linear_SVM.<br />
 
 Accuracy of svm Classifier:  0.9262599469496021
-             precision    recall  f1-score   support
+
+          precision    recall  f1-score   support
 
           0       0.92      0.92      0.92       157
           1       0.84      0.90      0.87       207
@@ -42,5 +43,4 @@ Accuracy of svm Classifier:  0.9262599469496021
          17       0.98      0.98      0.98       161
          18       0.96      0.89      0.92       165
          19       0.90      0.82      0.86       121
-
-avg / total       0.93      0.93      0.93      3770
+         avg / total       0.93      0.93      0.93      3770
